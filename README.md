@@ -1,3 +1,6 @@
+# Please see wiki for more detail info
+* [HandlerManager](https://github.com/jwzhuang/Jtools/wiki/How-to-use-HandlerManager)
+
 # Jtools
 A android tools
 Gradle:
