@@ -2,8 +2,8 @@ package tw.jwzhuang.jtools;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class HandlerManager implements HandlerWatcherListener {
     private static final HandlerManager ourInstance = new HandlerManager();
@@ -12,10 +12,10 @@ public class HandlerManager implements HandlerWatcherListener {
         return ourInstance;
     }
 
-    private List<HandlerWatcher> watchers;
+    private Map<String, HandlerWatcher> watchers;
 
     private HandlerManager() {
-        watchers = new LinkedList<>();
+        watchers = new Hashtable<>();
     }
 
     public void resume() {
@@ -36,12 +36,22 @@ public class HandlerManager implements HandlerWatcherListener {
 //    }
 
     public HandlerWatcher makeHandler(HandlerTask task, int secs){
-        return makeWatcher().runTask(task, secs * 1000);
+        return makeHandler(task, secs, "Default");
     }
 
-    private HandlerWatcher makeWatcher(){
+    public HandlerWatcher makeHandler(HandlerTask task, int secs, String token){
+        return makeWatcher(token).runTask(task, secs * 1000);
+    }
+
+    private HandlerWatcher makeWatcher(String token){
+
+        if (watchers.containsKey(token)){
+            HandlerWatcher watcher = watchers.get(token);
+            watcher.destroy();
+        }
+
         HandlerWatcher watcher = HandlerWatcher.builder(this.eventBus).setListener(this);
-        this.watchers.add(watcher);
+        this.watchers.put(token, watcher);
         return watcher;
     }
 
@@ -49,9 +59,7 @@ public class HandlerManager implements HandlerWatcherListener {
     @Override
     public void complete(HandlerWatcher watcher) {
         synchronized (this.watchers){
-            System.out.println("zzzz: " + this.watchers.size());
             this.watchers.remove(watcher);
-            System.out.println("zzzz: " + this.watchers.size());
         }
     }
     //</editor-fold>
