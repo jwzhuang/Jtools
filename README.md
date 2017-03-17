@@ -5,7 +5,7 @@
 A android tools
 Gradle:
 ```gradle
-compile 'tw.jwzhuang.Jtools:jtools:1.0.0'
+compile 'tw.jwzhuang.Jtools:jtools:1.0.1'
 ```
 
 Maven:
@@ -13,7 +13,7 @@ Maven:
 <dependency>
   <groupId>tw.jwzhuang.Jtools</groupId>
   <artifactId>jtools</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <type>pom</type>
 </dependency>
 ```
